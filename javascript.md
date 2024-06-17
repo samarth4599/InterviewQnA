@@ -101,3 +101,97 @@ Closures are powerful because they allow for:
 Encapsulation: The inner function can access variables from the outer function's scope, but those variables are not accessible from outside, providing a level of encapsulation and data privacy.
 Data Persistence: Variables in the outer function's scope are "captured" by the inner function and remain available for use even after the outer function has completed execution.
 Callbacks: Closures are commonly used to create callbacks and maintain state in event-driven programming, such as handling asynchronous operations or responding to user interactions.
+
+## What is call, bind and apply in js and which is faster?
+
+In JavaScript, call, bind, and apply are methods that allow you to control the context (the value of this) and pass arguments to functions.
+
+call: The call method allows you to invoke a function with a specified this value and individual arguments provided as separate arguments. Here's the syntax:
+
+```javascript
+function greet(name) {
+  console.log(`Hello, ${name}! I'm ${this.role}.`);
+}
+
+const person = {
+  role: "developer",
+};
+
+greet.call(person, "John");
+// Output: Hello, John! I'm developer.
+```
+
+apply: The apply method is similar to call, but it accepts an array-like object containing the arguments to be passed to the function. Here's the syntax:
+
+```javascript
+function greet(name, age) {
+  console.log(`Hello, ${name}! I'm ${this.role} and I'm ${age} years old.`);
+}
+
+const person = {
+  role: "developer",
+};
+
+greet.apply(person, ["John", 30]);
+// Output: Hello, John! I'm developer and I'm 30 years old.
+```
+
+bind: The bind method creates a new function that, when called, has its this keyword set to the provided value and pre-fills some or all of the arguments of the original function. Here's the syntax:
+
+```javascript
+function greet(name) {
+  console.log(`Hello, ${name}! I'm ${this.role}.`);
+}
+
+const person = {
+  role: "developer",
+};
+
+const greetPerson = greet.bind(person);
+greetPerson("John");
+// Output: Hello, John! I'm developer.
+```
+
+**Call is faster**
+
+## what is target and current target in js?
+
+During event handling, the target and currentTarget properties are used to identify the element on which an event was originally triggered and the element to which the event handler is attached, respectively.
+
+target: This property returns the element on which the event occurred, even if the event was bubbled up from a descendant element. It represents the actual element that triggered the event.
+currentTarget: This property returns the element to which the event handler is attached. It represents the element that the event listener is registered on.
+Here's a simple example to illustrate the difference:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event Target vs Current Target</title>
+    <style>
+      div {
+        border: 1px solid black;
+        padding: 10px;
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="outer">
+      <div id="inner">Click me!</div>
+    </div>
+
+    <script>
+      document
+        .getElementById("outer")
+        .addEventListener("click", function (event) {
+          console.log("Current Target:", event.currentTarget.id);
+          console.log("Target:", event.target.id);
+        });
+    </script>
+  </body>
+</html>
+```
+
+Inside the event listener, currentTarget refers to the outer <div> (where the event listener is attached), while target refers to the inner <div> (where the event actually occurred).
